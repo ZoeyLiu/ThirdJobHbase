@@ -61,6 +61,18 @@ public class Application {
             System.out.println();
         });
 
+        HBaseUtil.getInstance().deleteRow(TABLE_NAME,"Rose");
+        System.out.println("删除数据Rose后的数据：");
+        results = HBaseUtil.getInstance().getScanner(TABLE_NAME);
+        results.forEach(result -> {
+            System.out.println("rowkey == " + Bytes.toString(result.getRow()));
+            System.out.println(INFO_CF_NAME + ":" + STUDENT_ID_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(STUDENT_ID_COLUMN_NAME))));
+            System.out.println(INFO_CF_NAME + ":" + CLASS_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(CLASS_COLUMN_NAME))));
+            System.out.println(SCORE_CF_NAME + ":" + UNDERSTANDING_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(STUDENT_ID_COLUMN_NAME))));
+            System.out.println(SCORE_CF_NAME + ":" + PROGRAMMING_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(STUDENT_ID_COLUMN_NAME))));
+            System.out.println();
+        });
+
         HBaseConn.getInstance().closeConn();
     }
 }
