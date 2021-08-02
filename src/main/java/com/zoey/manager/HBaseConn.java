@@ -31,8 +31,6 @@ public class HBaseConn {
         try {
             if (configuration == null) {
                 configuration = HBaseConfiguration.create();
-//                configuration.set("hbase.zookeeper.property.clientPort", "2181");
-//                configuration.set("hbase.zookeeper.quorum", "47.101.204.23,47.101.216.12,47.101.206.249");
                 configuration.set("hbase.zookeeper.quorum", zookeeperUrl);
             }
         } catch (Exception e) {
