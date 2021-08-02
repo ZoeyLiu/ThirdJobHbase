@@ -16,8 +16,8 @@ import java.io.IOException;
 public class HBaseConn {
     private static final String zookeeperUrl = "47.101.204.23:2181,47.101.216.12:2181,47.101.206.249:2181";
 
-    private static Configuration configuration;
-    private static Connection connection;
+    private Configuration configuration;
+    private Connection connection;
 
     private static class HBaseConnInstance {
         private static final HBaseConn instance = new HBaseConn();
@@ -31,6 +31,8 @@ public class HBaseConn {
         try {
             if (configuration == null) {
                 configuration = HBaseConfiguration.create();
+//                configuration.set("hbase.zookeeper.property.clientPort", "2181");
+//                configuration.set("hbase.zookeeper.quorum", "47.101.204.23,47.101.216.12,47.101.206.249");
                 configuration.set("hbase.zookeeper.quorum", zookeeperUrl);
             }
         } catch (Exception e) {
@@ -49,14 +51,14 @@ public class HBaseConn {
         return connection;
     }
 
-    public static Connection getHBaseConn() {
+    public Connection getHBaseConn() {
         return getInstance().getConnection();
     }
 
-    public static void closeConn() {
-        if (connection != null) {
+    public void closeConn() {
+        if (getInstance().connection != null) {
             try {
-                connection.close();
+                getInstance().connection.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

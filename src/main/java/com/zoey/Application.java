@@ -2,8 +2,10 @@ package com.zoey;
 
 import com.zoey.manager.HBaseConn;
 import com.zoey.utils.HBaseUtil;
-import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import java.util.Arrays;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,10 +24,8 @@ public class Application {
     private static final String PROGRAMMING_COLUMN_NAME = "programming";
 
     public static void main(String[] args) {
-        String[] cfNames = {INFO_CF_NAME, SCORE_CF_NAME};
-        System.out.println("==========");
-        HBaseUtil.getInstance().createTable(TABLE_NAME, cfNames);
-        System.out.println("==========");
+        HBaseUtil.getInstance().createNamespace("LiuYiNing");
+        HBaseUtil.getInstance().createTable(TABLE_NAME, Arrays.asList(INFO_CF_NAME, SCORE_CF_NAME));
         HBaseUtil.getInstance().putRow(TABLE_NAME, "Tom", INFO_CF_NAME, STUDENT_ID_COLUMN_NAME, "20210000000001");
         HBaseUtil.getInstance().putRow(TABLE_NAME, "Tom", INFO_CF_NAME, CLASS_COLUMN_NAME, "1");
         HBaseUtil.getInstance().putRow(TABLE_NAME, "Tom", SCORE_CF_NAME, UNDERSTANDING_COLUMN_NAME, "75");
@@ -58,8 +58,9 @@ public class Application {
             System.out.println(INFO_CF_NAME + ":" + CLASS_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(CLASS_COLUMN_NAME))));
             System.out.println(SCORE_CF_NAME + ":" + UNDERSTANDING_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(STUDENT_ID_COLUMN_NAME))));
             System.out.println(SCORE_CF_NAME + ":" + PROGRAMMING_COLUMN_NAME + " == " + Bytes.toString(result.getValue(Bytes.toBytes(INFO_CF_NAME), Bytes.toBytes(STUDENT_ID_COLUMN_NAME))));
+            System.out.println();
         });
 
-        HBaseConn.closeConn();
+        HBaseConn.getInstance().closeConn();
     }
 }
